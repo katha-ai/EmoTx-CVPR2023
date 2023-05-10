@@ -16,6 +16,7 @@ srt_feat_dir: "srt_feats"
 tracks_dir: "character_tracks"
 track_names_dir: "track_names"
 track_name_metadata_dir: "track_names/metadata"
+mg_videos_dir: "mg_videos"
 
 # String variables
 scene_feat_type: "mvit_v1" # "resnet50_places" # "generic"
@@ -23,6 +24,7 @@ face_feat_type: "resnet50_fer" # "emo" # "generic"
 srt_feat_type: "independent" # "concat"
 srt_feat_model: "roberta"
 pkl_name: "2017-11-02-51-7637_py3.pkl"
+mvit_v1_weights: "MVIT_B_32x3_f294077834.pyth"
 
 # Boolean variables
 use_scene_feats: True
