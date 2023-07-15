@@ -5,6 +5,7 @@
     <a href="https://img.shields.io/badge/dataset-MovieGraphs-orange"><img src="https://img.shields.io/badge/dataset-MovieGraphs-orange"></a>
     <a href="https://katha-ai.github.io/projects/emotx"><img src="https://img.shields.io/website?up_message=up&up_color=green&down_message=down&down_color=red&url=https%3A%2F%2Fkatha-ai.github.io%2Fprojects%2Femotx&link=https%3A%2F%2Fkatha-ai.github.io%2Fprojects%2Femotx"></a>
     <a href="https://arxiv.org/abs/2304.05634"><img src="https://img.shields.io/badge/arXiv-2304.05634-f9f107.svg"></a>
+    <a href="https://youtu.be/7OATfNOdAzI"><img src="https://badges.aleen42.com/src/youtube.svg"></a>
     <a href="https://katha-ai.github.io/projects/emotx"><img src="docs/assets/emotx.gif" style="width: 800px;"></a>
 </div>
 
@@ -57,11 +58,11 @@ $ wget -O <FILENAME> <LINK>
 
 |File name | Contents | Comments |
 |----------|---------------|----------|
-| [EmoTx_min_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EdbbcQvEaBlIg6Sktxw60lQBiOUyDWdbKf3GhF88mrEhaA?download=1) | <ul><li>Extended character tracks</li><li>`emotic_mapping.json`</li><li>MovieGraphs pickle</li><li>MViT_v1_Kinetics400-SceneFeatures</li><li>ResNet50-FER13-FaceFeatures</li><li>Subtitle features</li><li>All pre-trained backbones used in EmoTx</li></ul> | contains `data/` directory which will occupy 167GB of disk space. |
+| [EmoTx_min_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EdbbcQvEaBlIg6Sktxw60lQBiOUyDWdbKf3GhF88mrEhaA?download=1) | <ul><li>Extended character tracks</li><li>`emotic_mapping.json`</li><li>MovieGraphs pickle</li><li>Scene (full frame) features extracted from MViT_v1 model pre-trained on _Kinetics400 dataset</li><li>Character face features extracted from ResNet50 pre-trained on VGGFace, FER13 and SFEW datasets</li><li>Subtitle features (from both pre-trained and fine-tuned RoBERTa)</li><li>All pre-trained backbones used in EmoTx</li></ul> | contains `data/` directory which will occupy 167GB of disk space. |
 | [InceptionResNetV1_VGGface_face_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EaTYYi2G2DNCpUaO7-Hl9PgBaXgCedq3QMxbuVos3Sfa7A?download=1) | Character face features extracted from InceptionResNet_v1 model pre-trained on VGGface2 dataset. | Contains `generic_face_features/` directory. To use these features with EmoTx, move this directory inside `data/` extracted from `EmoTx_min_feats.tar.gz`. After extraction, `generic_face_features/` will occupy 32GB of disk space. |
-| [VGG-vm_FER13_face_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/Ecx72Es1AdBGnT1Zr0U2R0cBjsx5WXP1nNAHjW2-3CdtbA?download=1) | Character face features  extracted from VGG-vm model pretrained on VGGFace and FER13 datasets | Contains `emo_face_features/` directory. TO use these features with EmoTx, move this directory inside `data/` extracted with `EmoTx_min_feats.tar.gz`. After extraction, `emo_face_features/` will occupy xxGB of disk sace.|
+| [VGG-vm_FER13_face_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/Ecx72Es1AdBGnT1Zr0U2R0cBjsx5WXP1nNAHjW2-3CdtbA?download=1) | Character face features  extracted from VGG-vm model pretrained on VGGFace and FER13 datasets | Contains `emo_face_features/` directory. TO use these features with EmoTx, move this directory inside `data/` extracted with `EmoTx_min_feats.tar.gz`. After extraction, `emo_face_features/` will occupy 254GB of disk sace.|
 | [ResNet150_ImgNet_scene_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EaPRbRO5hmVFtOXgkb-mLCkBX11y2T4dzwdXXSLbX0eAtw?download=1) | Scene (full frame) features extracted from ResNet150 model pre-trained on ImageNet dataset | Contains `generic_scene_features/` directory. To use these features with EmoTx, move this directory inside `data/` extracted from `EmoTx_min_feats.tar.gz`. After extraction, `generic_scene_features/` will occupy xxGB of disk space.  |
-| [ResNet50_PL365_scene_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EaSkvXnjw6tBsXsRYf41yTgBbafy63-Nen_MRXulx0ycQA?download=1) | Scene (full frame) features extracted from ResNet50 model pre-trained on Places365 dataset. | Contains `resnet50_places_scene_features/` directory. To use these features with EmoTx, move this directory inside `data/` extracted from `EmoTx_min_feats.tar.gz`. After extraction, `resnet50_places_scene_features/` will occupy xxGB of disk space. |
+| [ResNet50_PL365_scene_feats.tar.gz](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EaSkvXnjw6tBsXsRYf41yTgBbafy63-Nen_MRXulx0ycQA?download=1) | Scene (full frame) features extracted from ResNet50 model pre-trained on Places365 dataset. | Contains `resnet50_places_scene_features/` directory. To use these features with EmoTx, move this directory inside `data/` extracted from `EmoTx_min_feats.tar.gz`. After extraction, `resnet50_places_scene_features/` will occupy 143GB of disk space. |
 <br>
 
 ### :book: Create the `config.yaml`
@@ -123,7 +124,7 @@ After extracting the features and creating the config, you can train EmoTx on a 
 | [EmoTx_Emotic.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EetOBsV898hOhiV1oGEoJ3MBZkLx3n8dnLk_zxuzsBVoGQ?download=1) | EmoTx trained on EmoticMapping emotion label set | `(emotx) $ python trainer.py model_no=4.0 use_emotic_mapping=True ` |
 
 
-### :running: Pre-trained feature backbones
+### :open_hands: Pre-trained feature backbones
 | File name | Comments |
 |-----------|----------|
 | [ResNet50_PL365.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EXMhpmrJqPlMvTnwKg3cwI8B10jZjeYOQR3P7VW9nbayUQ?download=1) | ResNet50 trained on Places365 dataset |
@@ -136,7 +137,7 @@ After extracting the features and creating the config, you can train EmoTx on a 
 | [RoBERTa_finetuned_Emotic.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EZhITIWmEMNMpxsblIiGapIB0a_4wmJP4pqptVCSJSlyHw?download=1) | RoBERTa fine-tuned on MovieGraphs dataset with Emotic-Mapped label set |
 
 
-## :v: Cite
+## :round_pushpin: Cite
 If you find any part of this repository useful, please cite the following paper!
 ```
 @inproceedings{dhruv2023emotx,
