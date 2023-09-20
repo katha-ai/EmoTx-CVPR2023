@@ -89,7 +89,12 @@ dumps_path: "./dumps"
 Refer the full `config_base.yaml` for the default parameter configuration.
 
 ### :weight_lifting: Train
-After extracting the features and creating the config, you can train EmoTx on a 12GB GPU!
+After extracting the features and creating the config, you can train EmoTx on a 12GB GPU!<br>
+You can also use the pre-trained weights provided in the [Download](#download) section.<br>
+Note: the `Eval_mAP: [[A,B], C]` in log line (printed during training) represents the char_mAP, scene_mAP and average of both respectively.<br>
+Note: it is recommended to use [wandb](https://wandb.ai)<br>
+
+Using the default values given in the `config_base.yaml`
 1. To train EmoTx for MovieGraphs-top10 emotion label set, use the default config (no argument required)
 ```
 (emotx) $ python trainer.py
@@ -114,6 +119,23 @@ After extracting the features and creating the config, you can train EmoTx on a 
 ```
 (emotx) $ python trainer.py srt_feat_pretrained=False
 ```
+7. Train with only scene features
+```
+(emotx) $ python trainer.py use_char_feats=False use_srt_feats=False get_char_targets=False
+```
+8. To train with only character face features
+```
+(emotx) $ python trainer.py use_scene_feats=False use_srt_feats=False get_scene_targets=False
+```
+9. To train with scene and subtitle features
+```
+(emotx) $ python trainer.py use_char_feats=False get_char_targets=False
+```
+10. Enable wandb logging (recommended)
+```
+(emotx) $ python trainer.py wandb.logging=True wandb.project=<PROJECT_NAME> wandb.entity=<WANDB_USERNAME>
+```
+All the above arguments can be combined to train with different configurations.
 
 ## :mag: Download
 ### :rocket: EmoTx pre-trained weights
