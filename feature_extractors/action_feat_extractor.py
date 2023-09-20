@@ -40,7 +40,7 @@ class motion_feat_extractor(object):
         torch.cuda.set_device(self.device)
         if config["scene_feat_type"] == "mvit_v1":
             print("Selected MViT_v1 for action feature extraction")
-            self.action_model = MViT_v1(str(Path(self.config["saved_model_path"])/self.config["mvit_v1_weights"])).eval().to(self.device)
+            self.action_model = MViT_v1(str(Path(self.config["saved_model_path"])/self.config["feat_info"][config["scene_feat_type"]]["weights"])).eval().to(self.device)
             self.action_normalizer = ActionFeatNormalizer_MViT()
             self.action_embedding_size = self.config["feat_info"][config["scene_feat_type"]]["scene_feat_dim"]
             self.frame_group_size = self.action_normalizer.frame_group_size
@@ -76,8 +76,8 @@ class motion_feat_extractor(object):
             vid = self.get_video_object(movie_id, scene_name)
             emb = self.get_action_embeddings(vid)
             np.save(save_path/scene_name, emb)
-            # log_line = "{}/{} | Embeddings shape: {} | time taken {:.4f} sec."
-            # print(log_line.format(movie_id, scene_name, emb.shape, time.perf_counter()-start))
+            log_line = "{}/{} | Embeddings shape: {} | time taken {:.4f} sec."
+            print(log_line.format(movie_id, scene_name, emb.shape, time.perf_counter()-start))
 
     def runner(self):
         self.save_path.mkdir(parents=True, exist_ok=True)
