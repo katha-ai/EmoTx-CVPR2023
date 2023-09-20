@@ -119,6 +119,32 @@ def save_checkpoint_metadata(save_path, model_name, suffix, emo2id, train_metric
     f.close()
 
 
+def save_model(device, save_path, model, model_name, suffix):
+    """
+    Save the model to the given path.
+
+    Args:
+        save_path (Path): Path to save the model.
+        model (nn.Module): Model to save.
+        model_name (str): Name of the model.
+        suffix (str): Suffix to add to the filename.
+    """
+    save_dict = {
+        "num_labels": int(model.num_labels),
+        "num_pos_embeddings": int(model.positional_encoder.pe.shape[1]),
+        "scene_feat_dim": int(model.scene_dim_reduction.weight.shape[1]),
+        "char_feat_dim": int(model.char_dim_reduction.weight.shape[1]),
+        "srt_feat_dim": int(model.srt_dim_reduction.weight.shape[1]),
+        "num_chars": int(model.num_chars),
+        "num_enc_layers": len(model.encoder.layers),
+        "max_individual_tokens": int(model.max_individual_tokens),
+        "hidden_dim": int(model.hidden_dim),
+        "state_dict": model.cpu().state_dict(),
+    }
+    torch.save(save_dict, str(save_path/(model_name+suffix)))
+    model = model.to(device)
+
+
 def wandb_log_summary(wandb_logging, eval_mAPs, epoch, summary_str):
     """
     Log the summary metrics to wandb.
@@ -162,29 +188,25 @@ def create_checkpoint(eval_mAPs, model, save_path, model_name, emo2id, train_met
         best_ev_score_gm (float): Best evaluation mAP for geometric mean.
     """
     if eval_mAPs[-1] >= best_ev_score_scene:
-        torch.save(model.cpu(), str(save_path/(model_name+"_scene.pt")))
-        model = model.to(device)
+        save_model(device=device, save_path=save_path, model=model, model_name=model_name, suffix="_scene.pt")
         save_checkpoint_metadata(save_path, model_name, "_scene.pkl", emo2id, train_metrics, eval_metrics)
         wandb_log_summary(wandb_logging, eval_mAPs, epoch, "best_eval_mAP_{}_sceneCkpt")
         best_ev_score_scene = eval_mAPs[-1]
         print("New best eval_mAP_scene: {}".format(best_ev_score_scene))
     if eval_mAPs[0] >= best_ev_score_char:
-        torch.save(model.cpu(), str(save_path/(model_name+"_char.pt")))
-        model = model.to(device)
+        save_model(device=device, save_path=save_path, model=model, model_name=model_name, suffix="_char.pt")
         save_checkpoint_metadata(save_path, model_name, "_char.pkl", emo2id, train_metrics, eval_metrics)
         wandb_log_summary(wandb_logging, eval_mAPs, epoch, "best_eval_mAP_{}_charCkpt")
         best_ev_score_char = eval_mAPs[0]
         print("New best eval_mAP_char: {}".format(best_ev_score_char))
     if np.sum(eval_mAPs)/len(eval_mAPs) >= best_ev_score_avg:
-        torch.save(model.cpu(), str(save_path/(model_name+"_avg.pt")))
-        model = model.to(device)
+        save_model(device=device, save_path=save_path, model=model, model_name=model_name, suffix="_avg.pt")
         save_checkpoint_metadata(save_path, model_name, "_avg.pkl", emo2id, train_metrics, eval_metrics)
         wandb_log_summary(wandb_logging, eval_mAPs, epoch, "best_eval_mAP_{}_avgCkpt")
         best_ev_score_avg = np.sum(eval_mAPs)/len(eval_mAPs)
         print("New best eval_mAP_avg: {}".format(best_ev_score_avg))
     if np.sqrt(np.prod(eval_mAPs)) >= best_ev_score_gm:
-        torch.save(model.cpu(), str(save_path/(model_name+"_gm.pt")))
-        model = model.to(device)
+        save_model(device=device, save_path=save_path, model=model, model_name=model_name, suffix="_gm.pt")
         save_checkpoint_metadata(save_path, model_name, "_gm.pkl", emo2id, train_metrics, eval_metrics)
         wandb_log_summary(wandb_logging, eval_mAPs, epoch, "best_eval_mAP_{}_gmCkpt")
         best_ev_score_gm = np.sqrt(np.prod(eval_mAPs))
