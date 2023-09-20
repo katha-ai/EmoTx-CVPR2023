@@ -24,7 +24,6 @@ face_feat_type: "resnet50_fer" # "emo" # "generic"
 srt_feat_type: "independent" # "concat"
 srt_feat_model: "roberta"
 pkl_name: "2017-11-02-51-7637_py3.pkl"
-mvit_v1_weights: "MVIT_B_32x3_f294077834.pyth"
 
 # Boolean variables
 use_scene_feats: True
@@ -80,12 +79,14 @@ feat_info:
     face_feat_dim: 4096
   resnet50_places:
     scene_feat_dim: 2048
+    weights: "resnet50_places365.pth.tar"
   resnet50_fer:
     face_feat_dim: 2048
   roberta:
     srt_feat_dim: 768
   mvit_v1:
     scene_feat_dim: 768
+    weights: "MVIT_B_32x3_f294077834.pyth"
 pos_weight:
   '10': [2.67218201, 2.91079295, 2.36587678, 4.29210134, 3.74098798, 4.70900322, 4.57456829, 4.96806723, 4.72741935, 5.60037175]
   '25': [3.76215098, 4.07158590, 3.36492891, 5.86289121, 5.14819760, 6.40353698, 6.22919937, 6.73949580, 6.42741935, 7.55947955, 8.63389121, 8.3597561, 8.26559356, 9.41855204, 8.39795918, 10.74744898, 11.75623269, 10.09638554, 10.93005181, 12.15714286, 12.62426036, 14.98958333, 12.70535714, 16.18283582, 17.56854839]
