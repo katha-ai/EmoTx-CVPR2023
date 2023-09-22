@@ -1,4 +1,6 @@
 from torchvision import models
+from models.vgg_m_face_bn_fer_dag import Vgg_m_face_bn_fer_dag
+from models.resnet50_face_sfew_dag import Resnet50_face_sfew_dag
 
 import torch
 import torch.nn as nn
@@ -57,4 +59,29 @@ class ImageNet_ResNet152(nn.Module):
         batch_size = frames.shape[0]
         out = self.model(frames)
         out = out.reshape(batch_size, -1)
+        return out
+
+
+class VGGF2_face(nn.Module):
+    def __init__(self, weights_path):
+        super(VGGF2_face, self).__init__()
+        self.model = Vgg_m_face_bn_fer_dag()
+        self.model.load_state_dict(torch.load(weights_path))
+        self.model = nn.Sequential(*(list(self.model.children())[:-4]))
+
+    def forward(self, imgs):
+        batch_size = imgs.shape[0]
+        out = self.model(imgs)
+        out = out.reshape(batch_size, -1)
+        return out
+
+
+class Resnet50_FER(nn.Module):
+    def __init__(self, weights_path):
+        super(Resnet50_FER, self).__init__()
+        self.model = Resnet50_face_sfew_dag()
+        self.model.load_state_dict(torch.load(weights_path))
+
+    def forward(self, imgs):
+        out = self.model(imgs)
         return out
