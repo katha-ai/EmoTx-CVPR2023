@@ -41,8 +41,7 @@ class SceneNormalizer_ResNet152_ImageNet(object):
 class scene_feture_extractor(object):
     def __init__(self, config):
         self.config = config
-        self.movie_dir = Path(config["data_path"])/config["mg_videos_dir"]
-        self.tracks_path = Path(config["data_path"])/config["tracks_dir"]
+        self.movies_dir = Path(config["data_path"])/config["mg_videos_dir"]
         self.save_path = Path(config["save_path"])
         self.emb_save_dir = config["scene_feat_type"]+config["scene_feat_dir"]
         self.device = torch.device("cuda:{}".format(config["gpu_id"]) if torch.cuda.is_available() else "cpu")
@@ -64,7 +63,7 @@ class scene_feture_extractor(object):
             raise NotImplementedError("Scene feature type {} not implemented".format(config["scene_feat_type"]))
 
     def get_video_object(self, movie_id, scene):
-        clip_path = str(self.movie_dir/movie_id/(scene+'.mp4'))
+        clip_path = str(self.movies_dir/movie_id/(scene+'.mp4'))
         vid = VideoReader(clip_path)
         return vid
 
@@ -86,8 +85,8 @@ class scene_feture_extractor(object):
         print("Triggered context feature extraction for {}".format(movie_id))
         save_path = self.save_path/self.emb_save_dir/movie_id
         save_path.mkdir(parents=True, exist_ok=True)
-        track_pkls = os.listdir(self.tracks_path/movie_id)
-        scene_names = ['.'.join(pkl.split('.')[:-1]) for pkl in track_pkls]
+        vid_files = os.listdir(self.movies_dir/movie_id)
+        scene_names = ['.'.join(vid.split('.')[:-1]) for vid in vid_files if vid[-3:] in ['mp4', 'avi']]
         for scene_name in scene_names:
             start = time.perf_counter()
             video = self.get_video_object(movie_id, scene_name)
@@ -98,9 +97,12 @@ class scene_feture_extractor(object):
 
     def runner(self):
         self.save_path.mkdir(parents=True, exist_ok=True)
-        movies = os.listdir(self.tracks_path)
-        for movie in movies:
-            self.context_feat_extractor(movie)
+        movies = os.listdir(self.movies_dir)
+        for movie_id in movies:
+            if not os.path.isdir(self.movies_dir/movie_id):
+                print("Skipping {} | Not a directory".format(self.movies_dir/movie_id))
+                continue
+            self.context_feat_extractor(movie_id)
 
 
 if __name__ == "__main__":

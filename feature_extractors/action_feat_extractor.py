@@ -33,8 +33,7 @@ class motion_feat_extractor(object):
     def __init__(self, config):
         self.config = config
         self.save_path = Path(config["save_path"])
-        self.movie_dir = Path(config["data_path"])/config["mg_videos_dir"]
-        self.tracks_path = Path(config["data_path"])/config["tracks_dir"]
+        self.movies_dir = Path(config["data_path"])/config["mg_videos_dir"]
         self.emb_save_dir = config["scene_feat_type"]+config["scene_feat_dir"]
         self.device = torch.device("cuda:{}".format(config["gpu_id"]) if torch.cuda.is_available() else "cpu")
         torch.cuda.set_device(self.device)
@@ -44,9 +43,11 @@ class motion_feat_extractor(object):
             self.action_normalizer = ActionFeatNormalizer_MViT()
             self.action_embedding_size = self.config["feat_info"][config["scene_feat_type"]]["scene_feat_dim"]
             self.frame_group_size = self.action_normalizer.frame_group_size
+        else:
+            raise NotImplementedError("Invalid scene feature type: {}".format(config["scene_feat_type"]))
 
     def get_video_object(self, movie_id, scene):
-        clip_path = str(self.movie_dir/movie_id/(scene+".mp4"))
+        clip_path = str(self.movies_dir/movie_id/(scene+".mp4"))
         vid = VideoReader(clip_path)
         return vid
 
@@ -69,8 +70,8 @@ class motion_feat_extractor(object):
         print("Triggered action feature extraction for {}".format(movie_id))
         save_path = self.save_path/self.emb_save_dir/movie_id
         save_path.mkdir(parents=True, exist_ok=True)
-        track_pkls = os.listdir(self.tracks_path/movie_id)
-        scene_names = ['.'.join(pkl.split('.')[:-1]) for pkl in track_pkls]
+        vid_files = os.listdir(self.movies_dir/movie_id)
+        scene_names = ['.'.join(vid.split('.')[:-1]) for vid in vid_files if vid[-3:] in ["mp4", "avi"]]
         for scene_name in scene_names:
             start = time.perf_counter()
             vid = self.get_video_object(movie_id, scene_name)
@@ -81,11 +82,14 @@ class motion_feat_extractor(object):
 
     def runner(self):
         self.save_path.mkdir(parents=True, exist_ok=True)
-        movies = os.listdir(self.tracks_path)
-        for movie in movies:
+        movies = os.listdir(self.movies_dir)
+        for movie_id in movies:
+            if not os.path.isdir(self.movies_dir/movie_id):
+                print("Skipping {} | Not a directory".format(self.movies_dir/movie_id))
+                continue
             st = time.perf_counter()
-            self.action_feat_extractor(movie)
-            print("Completed {} in {:.4f} sec.".format(movie, time.perf_counter()-st))
+            self.action_feat_extractor(movie_id)
+            print("Completed {} in {:.4f} sec.".format(movie_id, time.perf_counter()-st))
 
 
 if __name__ == "__main__":
