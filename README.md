@@ -10,16 +10,17 @@
 </div>
 
 ## :bookmark: Contents
-1. [About](#about)
-2. [Setting up the repository](#setting-up-the-repository)
-    1. [Create a virtual environment](#create-a-python-virtual-environment)
-    2. [Setup the data directory](#download-the-moviegraphs-features)
-    3. [Update the config template](#create-the-configyaml)
-    4. [Train!](#train)
-4. [Download](#download)
-    1. [EmoTx pre-trained weights](#emotx-pre-trained-weights)
-    2. [Pre-trained feature backbones](#pre-trained-feature-backbones)
-3. [Bibtex](#cite)
+1. [About](#robot-about)
+2. [Setting up the repository](#toolbox-setting-up-the-repository)
+    1. [Create a virtual environment](#earth_asia-create-a-python-virtual-environment)
+    2. [Setup the data directory](#stars-download-the-moviegraphs-features)
+    3. [Update the config template](#book-create-the-configyaml)
+3. [Feature Extraction](#bomb-feature-extraction)
+4. [Train EmoTx with different configurations!](#weight_lifting-train)
+5. [Download](#mag-download)
+    1. [EmoTx pre-trained weights](#rocket-emotx-pre-trained-weights)
+    2. [Pre-trained feature backbones](#open_hands-pre-trained-feature-backbones)
+6. [Bibtex](#round_pushpin-cite)
 
 ## :robot: About
 This is the official code repository for CVPR-2023 accepted paper ["How you feelin'? Learning Emotions and Mental States in Movie Scenes"](https://arxiv.org/abs/2304.05634). This repository contains the implementation of EmoTx, a Transformer-based model designed to predict emotions and mental states at both the scene and character levels. Our model leverages multiple modalities, including visual, facial, and language features, to capture a comprehensive understanding of emotions in complex movie environments. Additionally, we provide the pre-trained weights for EmoTx and all the pre-trained feature backbones used in this project. We also provide the extracted features for scene (full frame), character faces and subtitle from MovieGraphs dataset.
@@ -88,9 +89,12 @@ dumps_path: "./dumps"
 ```
 Refer the full `config_base.yaml` for the default parameter configuration.
 
-### :weight_lifting: Train
+## :bomb: Feature Extraction
+Follow the instructions in [feature_extractors/README.md](feature_extractors/README.md) to extract required features from MovieGraphs dataset. Note that we have already provided the pre-extracted features above and therefore you need not extract the features again.
+
+## :weight_lifting: Train
 After extracting the features and creating the config, you can train EmoTx on a 12GB GPU!<br>
-You can also use the pre-trained weights provided in the [Download](#download) section.<br>
+You can also use the pre-trained weights provided in the [Download](#mag-download) section.<br>
 Note: the `Eval_mAP: [[A,B], C]` in log line (printed during training) represents the char_mAP, scene_mAP and average of both respectively.<br>
 Note: it is recommended to use [wandb](https://wandb.ai)<br>
 
@@ -175,6 +179,8 @@ model.load_state_dict(chkpt["state_dict"])
 | [ResNet50_FER.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EXD44dJWuMxMvPgvHCh8fikB6tWpPzsAvrIULQXmYJ-4VQ?e=umNkgK?download=1) | ResNet50 trained on VGGFace, FER2013 and SFEW datasets |
 | [InceptionResNetV1_VGGface.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EbGhXirljZlAq-J0VJUm0IsBBC3zvnC8lZqburadJwjnxg?download=1) | InceptionResNetV1 trained on VGGFace2 dataset |
 | [VGG-vm_FER13.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EbGLXEXEW0xNktis5XqgGA8BdhfIELJ0_FfR17RMTgC8tQ?download=1) | VGG-vm trained on VGGface and FER2013 dataset |
+| [MTCNN.pth](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EYpoawuM-BNJslyUpKBCkuwBNLAzdYFW1TSa93Vim12Tsg?download=1) and [MTCNN.json](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/Ee6h8i_9hJJMpoKiWQwnhWEBgonsRy0nkz2wCRCvSmu0GA?download=1) | MTCNN model and config used for face detection |
+| [Cascade_RCNN_movienet.pth](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EdwBB5CS115Ht6GxyckNq6wBXXg5ia6gBckQHlGO2vGI6Q?download=1) and [Cascade_RCNN_movienet.json](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EQc9VXAMNaVBqrZk0NaYLgEBFgkjkv7va6lO5CAptyj8zA?download=1) | Config and person detection model pre-trained on MovieNet character annotations |
 | [RoBERTa_finetuned_t10.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EUVZuWL49VVDsSYJAyXWp9ABl04IHgZAxcqiRGy7J6BRJQ?download=1) | RoBERTa fine-tuned on MovieGraphs dataset with Top-10 label set |
 | [RoBERTa_finetuned_t25.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EQyudvEGE55MqfgOH8KmHP0Bo7yWo6Ee9eMjVd42z1rtCw?download=1) | RoBERTa fine-tuned on MovieGraphs dataset with Top-25 label set |
 | [RoBERTa_finetuned_Emotic.pt](https://iiitaphyd-my.sharepoint.com/:u:/g/personal/dhruv_srivastava_research_iiit_ac_in/EZhITIWmEMNMpxsblIiGapIB0a_4wmJP4pqptVCSJSlyHw?download=1) | RoBERTa fine-tuned on MovieGraphs dataset with Emotic-Mapped label set |
