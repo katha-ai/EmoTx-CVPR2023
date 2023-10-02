@@ -1,3 +1,4 @@
+from feature_extractors import get_config
 from models.pretrained_models import MViT_v1
 from pathlib import Path
 from pytorchvideo.transforms import ShortSideScale
@@ -9,7 +10,6 @@ import os
 import numpy as np
 import time
 import torch
-import yaml
 
 
 class ActionFeatNormalizer_MViT(object):
@@ -93,8 +93,6 @@ class motion_feat_extractor(object):
 
 
 if __name__ == "__main__":
-    configname = "config.yaml"
-    with open(configname, 'r') as f:
-        config = yaml.safe_load(f)
+    config = get_config()
     obj = motion_feat_extractor(config)
     obj.runner()

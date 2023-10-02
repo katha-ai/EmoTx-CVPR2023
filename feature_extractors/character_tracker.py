@@ -1,4 +1,5 @@
 from decord import VideoReader
+from feature_extractors import get_config
 from multiprocessing import Process, current_process
 from pathlib import Path
 from utils.sort import *
@@ -7,7 +8,6 @@ import os
 import pickle
 import sys
 import time
-import yaml
 
 
 class char_tracker(object):
@@ -112,8 +112,6 @@ class char_tracker(object):
 
 
 if __name__ == "__main__":
-    config_name = sys.argv[1] if sys.argv[1:] else "config.yaml"
-    with open(config_name, 'r') as f:
-        config = yaml.safe_load(f)
+    config = get_config()
     tracker_obj = char_tracker(config)
     tracker_obj.start_tracking()

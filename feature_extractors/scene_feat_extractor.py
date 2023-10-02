@@ -1,3 +1,4 @@
+from feature_extractors import get_config
 from models.pretrained_models import Places365_ResNet50, ImageNet_ResNet152
 from pathlib import Path
 from PIL import Image
@@ -10,7 +11,6 @@ import os
 import sys
 import time
 import torch
-import yaml
 
 
 class SceneNormalizer_ResNet50_places365(object):
@@ -106,8 +106,6 @@ class scene_feture_extractor(object):
 
 
 if __name__ == "__main__":
-    configname = sys.argv[1] if sys.argv[1:] else "config.yaml"
-    with open(configname, 'r') as f:
-        config = yaml.safe_load(f)
+    config = get_config()
     obj = scene_feture_extractor(config)
     obj.runner()
