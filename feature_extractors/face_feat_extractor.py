@@ -78,7 +78,7 @@ class character_feture_extractor(object):
             self.normalizer = FaceNormalizer_IRV1()
             self.roi_shape = self.normalizer.roi_shape
         else:
-            raise NotImplementedError
+            raise NotImplementedError("face feature type {} not implemented".format(config["face_feat_type"]))
         self.embedding_size = self.config["feat_info"][self.config["face_feat_type"]]['face_feat_dim']
 
     def get_video_object(self, movie_id, scene):
