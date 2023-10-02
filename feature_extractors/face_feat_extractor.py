@@ -1,3 +1,4 @@
+from feature_extractors import get_config
 from pathlib import Path
 from PIL import Image
 from facenet_pytorch import InceptionResnetV1, fixed_image_standardization
@@ -11,7 +12,6 @@ import pickle
 import sys
 import time
 import torch
-import yaml
 
 
 class FaceNormalizer_IRV1(object):
@@ -149,8 +149,6 @@ class character_feture_extractor(object):
 
 
 if __name__ == "__main__":
-    config_filename = sys.argv[1] if sys.argv[1:] else "config.yaml"
-    with open(config_filename, 'r') as f:
-        config = yaml.safe_load(f)
+    config = get_config()
     obj = character_feture_extractor(config)
     obj.extract_char_face_features()

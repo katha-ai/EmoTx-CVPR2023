@@ -1,3 +1,4 @@
+from feature_extractors import get_config
 from utils.movienet_tools_subset.facedetector import FaceDetector
 from utils.movienet_tools_subset.persondetector import PersonDetector
 from pathlib import Path
@@ -7,7 +8,6 @@ import numpy as np
 import os
 import pickle
 import sys
-import yaml
 import time
 import torch
 
@@ -95,9 +95,6 @@ class CharacterDetector(object):
 
 
 if __name__ == "__main__":
-    config_name = sys.argv[1] if sys.argv[1:] else "config.yaml"
-    with open(config_name, 'r') as f:
-        config = yaml.safe_load(f)
-
+    config = get_config()
     obj = CharacterDetector(config)
     obj.start_detection_over_MovieGraphs()

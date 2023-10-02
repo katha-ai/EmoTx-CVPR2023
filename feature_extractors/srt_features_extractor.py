@@ -1,3 +1,4 @@
+from feature_extractors import get_config
 from models.roberta_finetuning import featExtract_finetuned_RoBERTa, featExtract_pretrained_RoBERTa
 from pathlib import Path
 from transformers import RobertaTokenizer
@@ -8,7 +9,6 @@ import pickle
 import sys
 import torch
 import time
-import yaml
 
 
 class srts_feat_extraction(object):
@@ -80,8 +80,6 @@ class srts_feat_extraction(object):
 
 
 if __name__ == "__main__":
-    config_filename = sys.argv[1] if sys.argv[1:] else "config.yaml"
-    with open(config_filename, 'r') as f:
-        cnfg = yaml.safe_load(f)
+    cnfg = get_config()
     obj = srts_feat_extraction(cnfg)
     obj.extract_features()
