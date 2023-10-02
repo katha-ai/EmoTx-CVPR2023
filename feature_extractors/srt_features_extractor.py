@@ -1,11 +1,11 @@
 from models.roberta_finetuning import featExtract_finetuned_RoBERTa, featExtract_pretrained_RoBERTa
-from omegaconf import OmegaConf
 from pathlib import Path
 from transformers import RobertaTokenizer
 from utils.scene_srt_reader import clip_srt
 
 import os
 import pickle
+import sys
 import torch
 import time
 import yaml
@@ -50,13 +50,11 @@ class srts_feat_extraction(object):
             pickle.dump(feats, f)
 
     @torch.no_grad()
-    def extract_features(self, movies):
+    def extract_features(self):
         """
-        Extracts the utterance features for the given list of movies.
-
-        Args:
-            movies (list): List of movies for which the features are to be extracted.
+        Extracts the utterance features from subtitles of all the movies.
         """
+        movies = os.listdir(self.srts_path)
         srt_reader_obj = clip_srt(self.config, movies)
         pst = time.perf_counter()
         for movie in movies:
@@ -81,18 +79,9 @@ class srts_feat_extraction(object):
         print("Finished extraction in {:.4f} sec.".format(time.perf_counter()-pst))
 
 
-def get_config():
-    """
-    Loads the config file and overrides the hyperparameters from the command line.
-    """
-    base_conf = OmegaConf.load("config.yaml")
-    overrides = OmegaConf.from_cli()
-    updated_conf = OmegaConf.merge(base_conf, overrides)
-    return OmegaConf.to_container(updated_conf)
-
-
 if __name__ == "__main__":
-    cnfg = get_config()
-    mvs = os.listdir(cnfg["clip_srts_path"])
+    config_filename = sys.argv[1] if sys.argv[1:] else "config.yaml"
+    with open(config_filename, 'r') as f:
+        cnfg = yaml.safe_load(f)
     obj = srts_feat_extraction(cnfg)
-    obj.extract_features(mvs)
+    obj.extract_features()

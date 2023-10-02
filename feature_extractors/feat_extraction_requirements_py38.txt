@@ -1,6 +1,7 @@
 addict==2.4.0
 av==10.0.0
 certifi==2022.6.15
+chardet==5.2.0
 charset-normalizer==2.1.0
 contourpy==1.1.1
 cycler==0.11.0
@@ -33,6 +34,7 @@ portalocker==2.8.2
 pyaml==23.9.6
 Pygments==2.16.1
 pyparsing==3.1.1
+pysrt==1.1.2
 python-dateutil==2.8.2
 pytorchvideo==0.1.5
 PyWavelets==1.4.1
